@@ -1,0 +1,4 @@
+nntp             119/tcp    # Network News Transfer Protocol
+nntp             119/udp    # Network News Transfer Protocol
+nntps            563/tcp    # nntp protocol over TLS/SSL (was snntp)
+nntps            563/udp    # nntp protocol over TLS/SSL (was snntp)
