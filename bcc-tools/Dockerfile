@@ -44,7 +44,6 @@ RUN apt-get update && apt-get install -y \
 	libluajit-5.1-dev \
 	arping \
 	iperf \
-	netperf \
 	ethtool \
 	devscripts \
 	zlib1g-dev \
@@ -53,7 +52,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Build libbcc
-ENV BCC_VERSION v0.7.0
+ENV BCC_VERSION v0.9.0
 RUN git clone --depth 1 --branch "$BCC_VERSION" https://github.com/iovisor/bcc.git /usr/src/bcc \
 	&& ( \
 		cd /usr/src/bcc \

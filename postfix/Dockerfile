@@ -8,11 +8,13 @@ RUN apk add --no-cache \
 	postfix \
 	rsyslog \
 	runit \
-	--repository https://dl-3.alpinelinux.org/alpine/edge/main
+	--repository http://dl-cdn.alpinelinux.org/alpine/edge/main
 
 COPY service /etc/service
 COPY runit_bootstrap /usr/sbin/runit_bootstrap
 COPY rsyslog.conf /etc/rsyslog.conf
+
+RUN ln -sf /dev/stdout /var/log/mail.log
 
 STOPSIGNAL SIGKILL
 

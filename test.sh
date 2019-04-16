@@ -24,11 +24,13 @@ validate_diff() {
 
 # get the dockerfiles changed
 IFS=$'\n'
+# shellcheck disable=SC2207
 files=( $(validate_diff --name-only -- '*Dockerfile') )
 unset IFS
 
 # build the changed dockerfiles
-for f in "${files[@]}"; do
+# shellcheck disable=SC2068
+for f in ${files[@]}; do
 	if ! [[ -e "$f" ]]; then
 		continue
 	fi
@@ -44,7 +46,7 @@ for f in "${files[@]}"; do
 
 	(
 	set -x
-	docker build -t ${base}:${suite} ${build_dir}
+	docker build -t "${base}:${suite}" "${build_dir}"
 	)
 
 	echo "                       ---                                   "
