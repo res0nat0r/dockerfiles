@@ -11,7 +11,7 @@
 FROM alpine:latest
 LABEL maintainer "Christian Koep <christiankoep@gmail.com>"
 
-ENV KEEPASSXC_VERSION 2.3.4
+ENV KEEPASSXC_VERSION 2.4.3
 
 RUN buildDeps=' \
 		automake \
@@ -25,8 +25,11 @@ RUN buildDeps=' \
 		git \
 		libgcrypt-dev \
 		libmicrohttpd-dev \
+		libqrencode-dev	\
+		libsodium-dev \
 		make \
 		qt5-qtbase-dev \
+		qt5-qtsvg-dev \
 		qt5-qttools-dev \
 	' \
 	set -x \
@@ -48,9 +51,12 @@ RUN	apk --no-cache add \
 		libcurl \
 		libmicrohttpd \
 		libgcrypt \
+		libqrencode \
+		libsodium \
 		mesa-dri-intel \
 		qt5-qtbase \
 		qt5-qtbase-x11 \
+		qt5-qtsvg \
 		qt5-qttools \
 		ttf-dejavu
 

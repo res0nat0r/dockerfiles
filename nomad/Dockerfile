@@ -1,4 +1,4 @@
-FROM golang:1.10 as builder
+FROM golang:1.11 as builder
 MAINTAINER Jessica Frazelle <jess@linux.com>
 
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
 	g++ \
 	make \
 	nodejs \
+	npm \
 	pkgconf \
 	python \
 	yarn \
@@ -28,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-ENV NOMAD_VERSION v0.9.0-beta3
+ENV NOMAD_VERSION v0.9.4-rc1
 
 RUN go get github.com/hashicorp/nomad
 

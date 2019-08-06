@@ -27,7 +27,7 @@ RUN apk --no-cache add \
 
 RUN pip install acme
 
-ENV CERTBOT_VERSION 0.32.0
+ENV CERTBOT_VERSION 0.35.1
 
 RUN buildDeps=' \
 		git \
