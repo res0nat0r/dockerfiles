@@ -103,6 +103,7 @@ compare() {
 
 projects=(
 iovisor/bcc
+iovisor/bpftrace
 browsh-org/browsh
 certbot/certbot
 cloudflare/cfssl
@@ -113,7 +114,6 @@ curl/curl
 kolide/fleet
 GoogleCloudPlatform/cloud-sdk-docker
 google/gitiles
-bazelbuild/bazel
 google/guetzli
 irssi/irssi
 cryptodotis/irssi-otr

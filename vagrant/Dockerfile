@@ -14,6 +14,7 @@ RUN	apt-get update && apt-get install -y \
 	pkg-config \
 	qemu-kvm \
 	ruby-dev \
+	ssh \
 	zlib1g-dev \
 	--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
