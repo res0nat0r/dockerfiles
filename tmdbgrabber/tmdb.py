@@ -7,9 +7,7 @@ import re
 import requests
 from PIL import Image
 
-
-KEY = $KEY_HERE
-
+KEY = os.environ.get('KEY')
 
 def get_configuration():
     url = "https://api.themoviedb.org/3/configuration?api_key={}".format(KEY)

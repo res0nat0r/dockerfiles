@@ -2,6 +2,9 @@
 
 FROM python:2
 
+ARG KEY
+ENV KEY=$KEY
+
 ADD requirements.txt /
 ADD tmdb.py /tmdb/tmdb.py
 
