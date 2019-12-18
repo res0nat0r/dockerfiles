@@ -7,7 +7,7 @@ RUN apk --no-cache add \
 	libressl \
 	python3
 
-ENV CERTBOT_VERSION 0.38.0
+ENV CERTBOT_VERSION 1.0.0
 
 RUN buildDeps=' \
 		build-base \
@@ -21,7 +21,7 @@ RUN buildDeps=' \
 	&& apk --no-cache add $buildDeps \
 	&& pip3 install acme \
 	&& git clone --depth 1 --branch "v$CERTBOT_VERSION" https://github.com/certbot/certbot /usr/src/certbot \
-	&& cd /usr/src/certbot \
+	&& cd /usr/src/certbot/certbot \
 	&& python3 setup.py build || return 1 \
 	&& python3 setup.py install --prefix=/usr || return 1 \
 	&& rm -rf /usr/src/certbot \

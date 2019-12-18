@@ -49,8 +49,6 @@ get_latest() {
 		dir="zookeeper/3.5"
 	elif [[ "$dir" == "oauth2_proxy" ]]; then
 		dir="oauth2-proxy"
-	elif [[ "$dir" == "now-cli" ]]; then
-		dir="now"
 	elif [[ "$dir" == "wireguard" ]]; then
 		dir="wireguard/install"
 	fi
@@ -107,6 +105,7 @@ iovisor/bpftrace
 browsh-org/browsh
 certbot/certbot
 cloudflare/cfssl
+quay/clair
 hashicorp/consul
 coredns/coredns
 CouchPotato/CouchPotatoServer
@@ -123,13 +122,13 @@ MidnightCommander/mc
 zyedidia/micro
 mitmproxy/mitmproxy
 hashicorp/nomad
-zeit/now-cli
 nzbget/nzbget
 pusher/oauth2_proxy
 facebook/osquery
 hashicorp/packer
 Tautulli/Tautulli
 perkeep/perkeep
+pomerium/pomerium
 powershell/powershell
 Radarr/Radarr
 cesanta/docker_auth

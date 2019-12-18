@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine as builder
+FROM golang:alpine as builder
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
@@ -10,7 +10,7 @@ RUN apk --no-cache add \
 	git \
 	make
 
-ENV COREDNS_VERSION v1.6.3
+ENV COREDNS_VERSION v1.6.5
 
 RUN git clone --depth 1 --branch ${COREDNS_VERSION} https://github.com/coredns/coredns /go/src/github.com/coredns/coredns
 

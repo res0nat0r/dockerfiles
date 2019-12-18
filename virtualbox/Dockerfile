@@ -28,7 +28,7 @@
 # then you can remove all the shit you copied
 # 	rm -rf /usr/share/virtualbox /usr/lib/virtualbox
 #
-FROM debian:bullseye-slim
+FROM debian:buster-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
