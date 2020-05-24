@@ -4,15 +4,19 @@ RUN apk add --no-cache \
 	lua5.1-cjson \
 	luajit
 
-ENV NGINX_VERSION 1.17.6
+ENV NGINX_VERSION 1.18.0
 # https://github.com/simplresty/ngx_devel_kit/releases
 ENV NGX_DEVEL_KIT_VERSION v0.3.1rc1
 # https://github.com/openresty/lua-nginx-module/releases
-ENV LUA_NGINX_MODULE_VERSION v0.10.15
+ENV LUA_NGINX_MODULE_VERSION v0.10.16rc5
 # https://github.com/leev/ngx_http_geoip2_module/releases
 ENV NGX_HTTP_GEOIP2_MODULE_VERSION 3.3
 # https://github.com/maxmind/libmaxminddb/releases
 ENV LIBMAXMINDDB_VERSION 1.4.2
+# https://github.com/openresty/lua-resty-core/releases
+ENV LUA_RESTY_CORE_VERSION v0.1.18rc4
+# https://github.com/openresty/lua-resty-lrucache/releases
+ENV LUA_RESTY_LRUCACHE_VERSION v0.10rc1
 
 # Tell nginx's build system where to find LuaJIT 2.1:
 ENV LUAJIT_LIB=/usr/lib/
@@ -92,6 +96,18 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& git clone --depth 1 --branch "${NGX_DEVEL_KIT_VERSION}" https://github.com/simplresty/ngx_devel_kit.git /usr/src/ngx_devel_kit \
 	&& git clone --depth 1 --branch "${LUA_NGINX_MODULE_VERSION}" https://github.com/openresty/lua-nginx-module.git /usr/src/lua-nginx-module \
 	&& git clone --depth 1 --branch "${NGX_HTTP_GEOIP2_MODULE_VERSION}" https://github.com/leev/ngx_http_geoip2_module.git /usr/src/ngx_http_geoip2_module \
+	&& git clone --depth 1 --branch "${LUA_RESTY_CORE_VERSION}" https://github.com/openresty/lua-resty-core.git /usr/src/lua-resty-core \
+	&& ( \
+		cd /usr/src/lua-resty-core \
+		&& make \
+		&& make install \
+	) \
+	&& git clone --depth 1 --branch "${LUA_RESTY_LRUCACHE_VERSION}" https://github.com/openresty/lua-resty-lrucache.git /usr/src/lua-resty-lrucache \
+	&& ( \
+		cd /usr/src/lua-resty-lrucache \
+		&& make \
+		&& make install \
+	) \
 	&& mkdir -p /usr/src/libmaxminddb \
 	&& curl -sSL "https://github.com/maxmind/libmaxminddb/releases/download/${LIBMAXMINDDB_VERSION}/libmaxminddb-${LIBMAXMINDDB_VERSION}.tar.gz" | tar -xzf - --strip-components 1 -C /usr/src/libmaxminddb \
 	&& ( \
@@ -147,7 +163,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		&& strip /usr/sbin/nginx* \
 		&& strip /usr/lib/nginx/modules/*.so \
 	) \
-	&& rm -rf /usr/src/nginx-$NGINX_VERSION /usr/src/ngx_devel_kit /usr/src/lua-nginx-module /usr/src/ngx_http_geoip2_module /usr/src/libmaxminddb \
+	&& rm -rf /usr/src/nginx-$NGINX_VERSION /usr/src/ngx_devel_kit /usr/src/lua-nginx-module /usr/src/ngx_http_geoip2_module /usr/src/libmaxminddb /usr/src/lua-resty-core /usr/src/lua-resty-lrucache \
 	\
 	# Bring in gettext so we can get `envsubst`, then throw
 	# the rest away. To do this, we need to install `gettext`
@@ -176,6 +192,7 @@ STOPSIGNAL SIGTERM
 EXPOSE 80 443
 
 ENV TELIZE_VERSION 66063c6c6e5bbbafcf493c5bc7c825f0a6e1b03d
+ENV LICENSE_KEY lgNvGyhnUKpa5PJi
 
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
@@ -183,9 +200,9 @@ RUN set -x \
 		git \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& mkdir -p /usr/share/GeoIP \
-	&& curl -sSL "http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
-	&& curl -sSL "http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
-	&& curl -sSL "http://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
+	&& curl -sSL "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
+	&& curl -sSL "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
+	&& curl -sSL "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar -xzf - --strip-components 1 -C /usr/share/GeoIP \
 	&& git clone https://github.com/fcambus/telize.git /usr/src/telize \
 	&& ( \
 		cd /usr/src/telize \
@@ -198,5 +215,7 @@ RUN set -x \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY mime.types /etc/nginx/mime.types
 COPY telize.conf /etc/nginx/conf.d/telize.conf
+
+WORKDIR /usr/local/lib/lua
 
 CMD ["nginx", "-g", "daemon off;"]
